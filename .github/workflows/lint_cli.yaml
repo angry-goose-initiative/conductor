@@ -1,0 +1,24 @@
+name: lint_cli
+
+on:
+  # Run actions fow all branches
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  lint-cli:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install clang-tidy
+        run: sudo apt install clang-tidy
+
+      - name: Set up CMake
+        run: cmake cli/ -B cli/build -DENABLE_CLANG_TIDY=ON
+
+      - name: Build project
+        run: cmake --build cli/build

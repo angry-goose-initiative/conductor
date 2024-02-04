@@ -1,0 +1,28 @@
+name: build_cli
+
+on:
+  # Run actions fow all branches
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  build-cli:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations.
+      fail-fast: false
+
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up CMake
+        run: cmake cli/ -B cli/build
+
+      - name: Build project
+        run: cmake --build cli/build
